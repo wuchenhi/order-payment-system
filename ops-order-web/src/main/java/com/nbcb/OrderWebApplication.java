@@ -1,0 +1,13 @@
+package com.nbcb;
+
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@EnableDubboConfiguration
+public class OrderWebApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderWebApplication.class, args);
+    }
+}

@@ -1,0 +1,15 @@
+#mq启动
+nohup /home/wuyi/Desktop/rocketmq-all-5.1.3-bin-release/bin/mqnamesrv &
+nohup mqbroker -c /home/wuyi/Desktop/rocketmq-all-5.1.3-bin-release/conf/2m-2s-sync/broker-a.properties &
+nohup mqbroker -c /home/wuyi/Desktop/rocketmq-all-5.1.3-bin-release/conf/2m-2s-sync/broker-a-s.properties &
+nohup mqbroker -c /home/wuyi/Desktop/rocketmq-all-5.1.3-bin-release/conf/2m-2s-sync/broker-b.properties &
+nohup mqbroker -c /home/wuyi/Desktop/rocketmq-all-5.1.3-bin-release/conf/2m-2s-sync/broker-b-s.properties &
+
+#mq关闭
+sh mqshutdown namesrv
+sh mqshutdown broker
+
+#dubbo启动
+/home/wuyi/Desktop/zookeeper-cluseter/zookeeper-1/apache-zookeeper-3.7.1-bin/bin/zkServer.sh start
+/home/wuyi/Desktop/zookeeper-cluseter/zookeeper-2/apache-zookeeper-3.7.1-bin/bin/zkServer.sh start
+/home/wuyi/Desktop/zookeeper-cluseter/zookeeper-3/apache-zookeeper-3.7.1-bin/bin/zkServer.sh start

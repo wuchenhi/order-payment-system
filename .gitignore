@@ -1,0 +1,11 @@
+.idea
+ops-api/target
+ops-common/target
+ops-coupon-service/target
+ops-goods-service/target
+ops-order-service/target
+ops-order-web/target
+ops-pay-service/target
+ops-pay-web/target
+ops-pojo/target
+ops-user-service/target
