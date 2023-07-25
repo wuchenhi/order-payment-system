@@ -8,6 +8,5 @@ public class CustomerException extends RuntimeException {
 
     public CustomerException(ShopCode shopCode) {
         this.shopCode = shopCode;
-
     }
 }

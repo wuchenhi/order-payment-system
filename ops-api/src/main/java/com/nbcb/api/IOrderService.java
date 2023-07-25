@@ -19,5 +19,4 @@ public interface IOrderService {
      * @return
      */
     Result cancelOrder(ShopOrder order);
-
 }

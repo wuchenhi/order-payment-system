@@ -40,7 +40,6 @@ public class PayWebTest {
         pay.setPayAmount(new BigDecimal(850));
         Result result = restTemplate.postForObject(baseURI + createPayment, pay, Result.class);
         System.out.println(result);
-
     }
 
     @Test

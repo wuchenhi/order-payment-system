@@ -96,6 +96,5 @@ public class IDWorker {
 
         System.out.println(System.currentTimeMillis() - start);
 
-
     }
 }

@@ -13,10 +13,6 @@ import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * @author xmy
- * @date 2019-10-09 21:42
- */
 @SuppressWarnings("ALL")
 @Slf4j
 @Component
@@ -51,7 +47,6 @@ public class CancelMQListener implements RocketMQListener<MessageExt> {
             e.printStackTrace();
             log.info("回退优惠券失败");
         }
-
 
     }
 }

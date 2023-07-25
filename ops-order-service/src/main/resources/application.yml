@@ -67,4 +67,3 @@ mq:
       tag: '*'
       consumeThreadMin: 20
       consumeThreadMax: 64
-

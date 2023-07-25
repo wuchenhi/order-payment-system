@@ -58,22 +58,22 @@ public class CancelMQListener implements RocketMQListener<MessageExt> {
             msgConsumerKey.setMsgTag(tags);
             msgConsumerKey.setGroupName(groupName);
             ShopMsgConsumer msgConsumer = msgConsumerMapper.selectByPrimaryKey(msgConsumerKey);
-            //3 判断如果消费过..
+            //3 判断如果消费过
             if (msgConsumer != null) {
                 //3.1 获取消息状态
                 Integer status = msgConsumer.getConsumerStatus();
-                // 处理过...返回
+                // 处理过
                 if (ShopCode.SHOP_MQ_MESSAGE_STATUS_SUCCESS.getCode().intValue() == status.intValue()) {
                     log.info("消息:" + msgId + ",已处理过");
                     return;
                 }
-                // 正在处理..
+                // 正在处理
                 if (ShopCode.SHOP_MQ_MESSAGE_STATUS_PROCESSING.getCode().intValue() == status.intValue()) {
                     log.info("消息:" + msgId + ",正在处理");
                     return;
                 }
 
-                // 处理失败..
+                // 处理失败
                 if (ShopCode.SHOP_MQ_MESSAGE_STATUS_FAIL.getCode().intValue() == status.intValue()) {
                     // 获取消息处理次数
                     Integer times = msgConsumer.getConsumerTimes();
@@ -90,13 +90,14 @@ public class CancelMQListener implements RocketMQListener<MessageExt> {
                     criteria.andMsgKeyEqualTo(msgConsumer.getMsgKey());
                     criteria.andGroupNameEqualTo(msgConsumer.getGroupName());
                     criteria.andConsumerTimesEqualTo(msgConsumer.getConsumerTimes());
+
                     int r = msgConsumerMapper.updateByExampleSelective(msgConsumer, shopMsgConsumerExample);
                     if (r <= 0) {
                         // 未修改成功
                         log.info("并发修改,稍后处理");
                     }
                 }
-            } else { //4 判断如果没消费过...
+            } else { //4 判断如果没消费过
                 msgConsumer = new ShopMsgConsumer();
                 msgConsumer.setMsgTag(tags);
                 msgConsumer.setMsgKey(keys);
@@ -114,7 +115,7 @@ public class CancelMQListener implements RocketMQListener<MessageExt> {
             ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(mqEntity.getGoodsId());
             Integer goodsNumber = goods.getGoodsNumber();
             goods.setGoodsNumber(goods.getGoodsNumber() + mqEntity.getGoodsNumber());
-            // 分布式并发问题 ,使用乐观锁 <方案待提升>
+            // 分布式并发问题 -> 乐观锁
             ShopGoodsExample shopGoodsExample = new ShopGoodsExample();
             ShopGoodsExample.Criteria criteria = shopGoodsExample.createCriteria();
             criteria.andGoodsIdEqualTo(goods.getGoodsId());
@@ -131,7 +132,6 @@ public class CancelMQListener implements RocketMQListener<MessageExt> {
                 criteria.andGoodsIdEqualTo(goods.getGoodsId());
                 criteria.andGoodsNumberEqualTo(goodsNumber);
                 r = shopGoodsMapper.updateByExample(goods, shopGoodsExample);
-
             }
 
             // 记录库存操作日志

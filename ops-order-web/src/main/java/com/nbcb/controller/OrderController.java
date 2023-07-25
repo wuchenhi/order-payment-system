@@ -24,13 +24,13 @@ public class OrderController {
         shopOrder.setGoodsId(order.getGoodsId());
         shopOrder.setUserId(order.getUserId());
         shopOrder.setCouponId(order.getCouponId());
-        shopOrder.setAddress("北京");
-        shopOrder.setGoodsNumber(1);
-        shopOrder.setGoodsPrice(new BigDecimal(1000));
-        shopOrder.setGoodsAmount(new BigDecimal(1000));
-        shopOrder.setShippingFee(BigDecimal.ZERO);
-        shopOrder.setOrderAmount(new BigDecimal(1000));
-        shopOrder.setMoneyPaid(new BigDecimal(100));
+        shopOrder.setAddress(order.getAddress());
+        shopOrder.setGoodsNumber(order.getGoodsNumber());
+        shopOrder.setGoodsPrice(order.getGoodsPrice());
+        shopOrder.setGoodsAmount(order.getGoodsAmount());
+        shopOrder.setShippingFee(order.getShippingFee());
+        shopOrder.setOrderAmount(order.getOrderAmount());
+        shopOrder.setMoneyPaid(order.getMoneyPaid());
         Result result = orderService.confirmOrder(shopOrder);
         return result;
     }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ShopMsgConsumerExample  implements Serializable {
+public class ShopMsgConsumerExample implements Serializable {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -708,7 +708,6 @@ public class ShopMsgConsumerExample  implements Serializable {
     }
 
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }

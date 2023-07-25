@@ -18,9 +18,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @SuppressWarnings("ALL")
+@Slf4j
 @Component
 @Service(interfaceClass = IUserService.class)
-@Slf4j
 public class UserServiceImpl implements IUserService {
 
     @Autowired

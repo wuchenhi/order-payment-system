@@ -113,7 +113,7 @@ public class OrderServiceImpl implements IOrderService {
 
             // 5 扣减库存
             Result reduceGoodsNum = reduceGoodsNum(order);
-//          Result reduceGoodsNum = reduceGoodsNumByMQ(order);
+            // Result reduceGoodsNum = reduceGoodsNumByMQ(order);
             if (reduceGoodsNum.getSuccess().equals(ShopCode.SHOP_FAIL.getSuccess())) {
                 log.info(reduceGoodsNum.toString());
                 mqEntity.setGoodsNumber(0);

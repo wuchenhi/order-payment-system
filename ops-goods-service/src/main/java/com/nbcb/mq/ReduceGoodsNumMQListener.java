@@ -55,7 +55,7 @@ public class ReduceGoodsNumMQListener implements RocketMQListener<MessageExt> {
             }
             Integer goodsNumber = goods.getGoodsNumber();
             goods.setGoodsNumber(goods.getGoodsNumber() - orderGoodsLog.getGoodsNumber());
-            // 分布式并发问题 ,使用乐观锁 <方案待提升>
+            // 分布式并发问题 ,使用乐观锁
             ShopGoodsExample shopGoodsExample = new ShopGoodsExample();
             ShopGoodsExample.Criteria criteria = shopGoodsExample.createCriteria();
             criteria.andGoodsIdEqualTo(goods.getGoodsId());

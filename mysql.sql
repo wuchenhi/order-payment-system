@@ -12,6 +12,8 @@ insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VAL
 insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VALUES(345988230098857981, 100, 378715381059301375, 0);
 insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VALUES(345988230098857982, 100, 378715381059301377, 0);
 insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VALUES(345988230098857983, 50, 378715381059301377, 0);
+insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VALUES(345988230098857986, 30, 378715381059301373, 0);
+insert into `shop_coupon` (`coupon_id`,`coupon_price`, `user_id`, `is_used`) VALUES(345988230098857987, 60, 378715381059301373, 0);
 
 CREATE TABLE `shop_goods` (
   `goods_id` bigint(50) NOT NULL COMMENT '主键',``
@@ -107,7 +109,7 @@ CREATE TABLE `shop_user` (
   `user_name` varchar(255) DEFAULT NULL COMMENT '用户名',
   `user_password` varchar(255) DEFAULT NULL COMMENT '密码',
   `user_mobile` varchar(255) DEFAULT NULL COMMENT '手机号',
-  `user_score` int(11) DEFAULT NULL COMMENT '积分',
+  `user_score` int(11) DEFAULT NULL COMMENT '额度相关',
   `user_reg_time` timestamp NULL DEFAULT NULL COMMENT '注册时间',
   `user_money` decimal(10,2) DEFAULT NULL COMMENT '用户余额',
   PRIMARY KEY (`user_id`)

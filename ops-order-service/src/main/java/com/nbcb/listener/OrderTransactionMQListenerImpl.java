@@ -58,20 +58,5 @@ public class OrderTransactionMQListenerImpl implements TransactionListener {
     public LocalTransactionState checkLocalTransaction(MessageExt messageExt) {
         System.out.println("消息Tag: " + messageExt.getTags());
         return LocalTransactionState.COMMIT_MESSAGE;
-//        System.out.println("检查 checkLocalTransaction" + Thread.currentThread().getId());
-//        System.out.println(messageExt);
-//        String tags = messageExt.getTags();
-//        System.out.println("tags: " + tags);
-//        if (tags.equals("0")) {
-//            String payload = new String(messageExt.getBody());
-//            System.out.println("消息体 检查" + payload);
-//            return LocalTransactionState.ROLLBACK_MESSAGE;
-//        }
-//        if (tags.equals("1")) {
-//            String payload = new String(messageExt.getBody());
-//            System.out.println("消息体 检查" + payload);
-//            return LocalTransactionState.COMMIT_MESSAGE;
-//        }
-//        return LocalTransactionState.COMMIT_MESSAGE;
     }
 }

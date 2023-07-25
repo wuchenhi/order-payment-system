@@ -46,7 +46,6 @@ public class GoodsServiceImpl implements IGoodsService {
             return new Result(ShopCode.SHOP_FAIL.getSuccess(), ShopCode.SHOP_REQUEST_PARAMETER_VALID.getCode(), ShopCode.SHOP_REQUEST_PARAMETER_VALID.getMessage());
         }
 
-
         /** 乐观锁实现*/
         ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(orderGoodsLog.getGoodsId());
         // 判断库存是否充足
@@ -55,7 +54,7 @@ public class GoodsServiceImpl implements IGoodsService {
         }
         Integer goodsNumber = goods.getGoodsNumber();
         goods.setGoodsNumber(goods.getGoodsNumber() - orderGoodsLog.getGoodsNumber());
-        // 分布式并发问题 ,使用乐观锁 <方案待提升>
+        // 分布式并发问题 解决方案：使用乐观锁
         ShopGoodsExample shopGoodsExample = new ShopGoodsExample();
         ShopGoodsExample.Criteria criteria = shopGoodsExample.createCriteria();
         criteria.andGoodsIdEqualTo(goods.getGoodsId());
@@ -75,7 +74,6 @@ public class GoodsServiceImpl implements IGoodsService {
                 criteria.andGoodsIdEqualTo(goods.getGoodsId());
                 criteria.andGoodsNumberEqualTo(goodsNumber);
                 r = shopGoodsMapper.updateByExample(goods, shopGoodsExample);
-
             }
         }
 

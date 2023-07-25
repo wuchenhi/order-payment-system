@@ -30,20 +30,20 @@ public class OrderWebTest {
 
     @Test
     public void confirmOrder() throws IOException {
-        Long couponId =  345988230098857983L;
+        Long couponId = 345988230098857990L;
         Long goodsId = 378715381063495688L;
-        Long userId = 378715381059301377L;
+        Long userId = 378715381059301373L;
         ShopOrder order = new ShopOrder();
         order.setGoodsId(goodsId);
         order.setUserId(userId);
         order.setCouponId(couponId);
-        order.setAddress("北京");
+        order.setAddress("深圳");
         order.setGoodsNumber(1);
         order.setGoodsPrice(new BigDecimal(1000));
         order.setGoodsAmount(new BigDecimal(1000));
         order.setShippingFee(BigDecimal.ZERO);
         order.setOrderAmount(new BigDecimal(1000));
-        order.setMoneyPaid(new BigDecimal(100));
+        order.setMoneyPaid(new BigDecimal(200));
 
         Result result = restTemplate.postForObject(baseURI + confirm, order, Result.class);
         System.out.println(result);

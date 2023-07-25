@@ -81,11 +81,9 @@ public enum ShopCode {
         return success;
     }
 
-
     public Integer getCode() {
         return code;
     }
-
 
     public String getMessage() {
         return message;

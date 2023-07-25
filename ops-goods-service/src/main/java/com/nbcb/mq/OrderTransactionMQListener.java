@@ -53,7 +53,7 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
         String body = new String(messageExt.getBody());
         ShopOrder order = JSON.parseObject(body, ShopOrder.class);
         log.info("商品扣减服务,接收到信息");
-        // 订单ID  商品ID 商品数量
+        // 订单ID  商品ID  商品数量
         ShopOrderGoodsLog orderGoodsLog = new ShopOrderGoodsLog();
         orderGoodsLog.setOrderId(order.getOrderId());
         orderGoodsLog.setGoodsId(order.getGoodsId());
@@ -64,7 +64,6 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private Result reduceGoodsNum(ShopOrderGoodsLog orderGoodsLog) {
@@ -83,7 +82,7 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
         }
 
 
-        /** 乐观锁实现*/
+        /** 乐观锁实现 */
         ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(orderGoodsLog.getGoodsId());
         // 判断库存是否充足
         if (goods.getGoodsNumber() < orderGoodsLog.getGoodsNumber()) {
@@ -96,7 +95,7 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
         }
         Integer goodsNumber = goods.getGoodsNumber();
         goods.setGoodsNumber(goods.getGoodsNumber() - orderGoodsLog.getGoodsNumber());
-        // 分布式并发问题 ,使用乐观锁 <方案待提升>
+        // 分布式并发问题->乐观锁
         ShopGoodsExample shopGoodsExample = new ShopGoodsExample();
         ShopGoodsExample.Criteria criteria = shopGoodsExample.createCriteria();
         criteria.andGoodsIdEqualTo(goods.getGoodsId());
