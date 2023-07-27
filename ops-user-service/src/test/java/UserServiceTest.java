@@ -22,7 +22,15 @@ public class UserServiceTest {
         System.out.println(user.getUserName());
         System.out.println(user.getUserMobile());
         System.out.println(user.getUserId());
+    }
 
+    @Test
+    public void findOneByName() {
 
+        String userName = "yyw";
+        ShopUser user = iUserService.findOneByName(userName);
+        System.out.println(user.getUserName());
+        System.out.println(user.getUserMobile());
+        System.out.println(user.getUserPassword());
     }
 }

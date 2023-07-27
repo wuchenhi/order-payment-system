@@ -22,6 +22,8 @@ public interface ShopUserMapper {
 
     ShopUser selectByPrimaryKey(Long userId);
 
+    ShopUser selectByName(String userName);
+
     int updateByExampleSelective(@Param("record") ShopUser record, @Param("example") ShopUserExample example);
 
     int updateByExample(@Param("record") ShopUser record, @Param("example") ShopUserExample example);

@@ -14,6 +14,14 @@ public interface IUserService {
     ShopUser findOne(Long userId);
 
     /**
+     * 根据name查询用户
+     *
+     * @param userName
+     * @return
+     */
+    ShopUser findOneByName(String userName);
+
+    /**
      * 更新用户余额
      *
      * @param userMoneyLog

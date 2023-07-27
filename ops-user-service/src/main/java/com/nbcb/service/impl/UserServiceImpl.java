@@ -38,6 +38,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public ShopUser findOneByName(String userName) {
+        return userMapper.selectByName(userName);
+    }
+
+    @Override
     public Result updateMoneyPaid(ShopUserMoneyLog userMoneyLog) {
         //1校验参数是否合法
         if (userMoneyLog == null ||
