@@ -22,6 +22,8 @@ public interface ShopGoodsMapper {
 
     ShopGoods selectByPrimaryKey(Long goodsId);
 
+    List<ShopGoods>  selectAll();
+
     int updateByExampleSelective(@Param("record") ShopGoods record, @Param("example") ShopGoodsExample example);
 
     int updateByExample(@Param("record") ShopGoods record, @Param("example") ShopGoodsExample example);

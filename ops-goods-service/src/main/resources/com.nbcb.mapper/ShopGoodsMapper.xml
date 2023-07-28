@@ -90,6 +90,11 @@
     from shop_goods
     where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shop_goods
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from shop_goods
     where goods_id = #{goodsId,jdbcType=BIGINT}

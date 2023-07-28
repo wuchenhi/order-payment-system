@@ -37,24 +37,8 @@ public class PayController {
         pay.setOrderId(orderId);
         pay.setIsPaid(ShopCode.SHOP_ORDER_PAY_STATUS_NO_PAY.getCode());
         pay.setPayAmount(payAmount);
-        Result result = payService.createPayment(pay);
 
-        log.info(result.getMessage());
-
-        Timer timer=new Timer();
-
-
-        // 自动支付 回调
-        pay.setIsPaid(ShopCode.SHOP_ORDER_PAY_STATUS_IS_PAY.getCode());
-
-        //休眠2秒，模拟正在办理业务
-        try {
-            Thread.sleep(2000);//毫秒数
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return payService.callbackPayment(pay);
+        return payService.createPayment(pay);
     }
 
     /**
@@ -67,4 +51,13 @@ public class PayController {
     Result callbackPayment(@RequestBody ShopPay shopPay) {
         return payService.callbackPayment(shopPay);
     }
+
+
+    @PostMapping("/callbackPay")
+    Result callbackPay(@RequestBody ShopPay shopPay) {
+        // 自动支付 回调
+        shopPay.setIsPaid(ShopCode.SHOP_ORDER_PAY_STATUS_IS_PAY.getCode());
+        return payService.callbackPayment(shopPay);
+    }
+
 }

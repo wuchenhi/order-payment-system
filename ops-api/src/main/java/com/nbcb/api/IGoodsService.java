@@ -4,6 +4,8 @@ import com.nbcb.entity.Result;
 import com.nbcb.pojo.ShopGoods;
 import com.nbcb.pojo.ShopOrderGoodsLog;
 
+import java.util.List;
+
 public interface IGoodsService {
     /**
      * 根据ID 查询 Goods
@@ -12,6 +14,15 @@ public interface IGoodsService {
      * @return
      */
     ShopGoods findOne(Long goodsId);
+
+
+    /**
+     * 查询all Goods
+     *
+     * @param
+     * @return
+     */
+    List<ShopGoods> findAll();
 
     /**
      * 扣减库存

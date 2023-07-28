@@ -9,12 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = GoodsServiceApplication.class)
 public class GoodsServiceTest {
 
     @Autowired
     private IGoodsService iGoodsService;
+
+    @Test
+    public void fineAllGoods() {
+        List<ShopGoods> goodsList = iGoodsService.findAll();
+        for(ShopGoods goods : goodsList) {
+            System.out.println(goods.getGoodsId());
+        }
+    }
 
     @Test
     public void findOneGoods() {

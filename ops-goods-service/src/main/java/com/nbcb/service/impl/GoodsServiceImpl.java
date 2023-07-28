@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @SuppressWarnings("ALL")
@@ -33,6 +34,11 @@ public class GoodsServiceImpl implements IGoodsService {
             CastException.cast(ShopCode.SHOP_REQUEST_PARAMETER_VALID);
         }
         return shopGoodsMapper.selectByPrimaryKey(goodsId);
+    }
+
+    @Override
+    public List<ShopGoods> findAll() {
+        return shopGoodsMapper.selectAll();
     }
 
     @Override
