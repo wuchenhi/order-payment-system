@@ -3,10 +3,7 @@ package com.nbcb.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.nbcb.api.IGoodsService;
 import com.nbcb.api.IUserService;
-import com.nbcb.entity.GoodsDetailResponse;
-import com.nbcb.entity.GoodsResponse;
-import com.nbcb.entity.LoginResponse;
-import com.nbcb.entity.GoodsResult;
+import com.nbcb.entity.*;
 import com.nbcb.pojo.ShopGoods;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.UserLogin;
@@ -56,16 +53,22 @@ public class GoodsController {
 
     @GetMapping("/detail")
     public GoodsDetailResponse getOneGoods(Long id) {
-        log.info("收到请求");
+        log.info(id.toString());
         // 查找货物
         ShopGoods goods = goodsService.findOne(id);
+
+        GoodsDetailResult goodsDetailResult = new GoodsDetailResult();
+        goodsDetailResult.setId(goods.getGoodsId().toString());
+        goodsDetailResult.setName(goods.getGoodsName());
+        goodsDetailResult.setPrice(goods.getGoodsPrice().toString());
+        goodsDetailResult.setInventory(goods.getGoodsNumber());
 
         GoodsDetailResponse response = new GoodsDetailResponse();
 
         response.setCode("1");
         response.setMsg("操作成功");
-        response.setResult(goods);
-
+        response.setResult(goodsDetailResult);
+        log.info(goods.getGoodsId().toString());
         return response;
     }
 }

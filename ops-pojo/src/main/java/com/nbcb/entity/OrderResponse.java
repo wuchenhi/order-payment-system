@@ -1,12 +1,9 @@
-// GoodsDetailResponse.java
-
 package com.nbcb.entity;
 
-import lombok.Data;
 
-@Data
-public class GoodsDetailResponse {
-    /**
+@lombok.Data
+public class OrderResponse {
+    /*
      * 业务状态码，1成功, 其他失败
      */
     private String code;
@@ -17,5 +14,5 @@ public class GoodsDetailResponse {
     /**
      * 响应结果
      */
-    private GoodsDetailResult result;
+    private OrderResultString result;
 }

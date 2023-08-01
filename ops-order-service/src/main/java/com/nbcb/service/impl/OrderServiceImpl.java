@@ -362,7 +362,6 @@ public class OrderServiceImpl implements IOrderService {
                         log.info("订单:" + order.getOrderId() + ",扣减库存失败");
 
                     }
-
                 }
             });
             /*  MQ end */
@@ -496,7 +495,7 @@ public class OrderServiceImpl implements IOrderService {
      * @return
      */
     private BigDecimal calculateShippingFee(BigDecimal orderAmount) {
-        if (orderAmount.compareTo(new BigDecimal(100)) == 1) {
+        if (orderAmount.compareTo(new BigDecimal(99)) == 1) {
             return BigDecimal.ZERO;
         } else {
             return new BigDecimal(10);
