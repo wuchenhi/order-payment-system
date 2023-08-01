@@ -19,4 +19,6 @@ public interface IOrderService {
      * @return
      */
     Result cancelOrder(ShopOrder order);
+
+    ShopOrder findOne(Long id);
 }

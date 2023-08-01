@@ -8,9 +8,6 @@ import com.nbcb.pojo.ShopPay;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import static com.alibaba.com.caucho.hessian.io.HessianInputFactory.log;
 
@@ -60,4 +57,19 @@ public class PayController {
         return payService.callbackPayment(shopPay);
     }
 
+
+//    @GetMapping("/{id}")
+//    public PayQueryResponse getOrder(@PathVariable("id") Long id) {
+//        log.info(id.toString());
+//
+//        ShopPay shopOrder = payService.findOne(id);
+//
+//        PayQueryResponse orderQueryResponse = new PayQueryResponse();
+//
+//        orderQueryResponse.setCode("1");
+//        orderQueryResponse.setMsg("操作成功");
+//        orderQueryResponse.setResult(shopOrder);
+//
+//        return orderQueryResponse;
+//    }
 }

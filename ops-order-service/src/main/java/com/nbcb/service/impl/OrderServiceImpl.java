@@ -76,6 +76,12 @@ public class OrderServiceImpl implements IOrderService {
     private String reduceGoodsNumTag;
 
     @Override
+    public ShopOrder findOne(Long id) {
+        return orderMapper.selectByPrimaryKey(id);
+    }
+
+
+    @Override
     public Result confirmOrder(ShopOrder order) {
         // 1 校验订单
         checkOrder(order);

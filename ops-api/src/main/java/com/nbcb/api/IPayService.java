@@ -1,6 +1,7 @@
 package com.nbcb.api;
 
 import com.nbcb.entity.Result;
+import com.nbcb.pojo.ShopOrder;
 import com.nbcb.pojo.ShopPay;
 
 public interface IPayService {
@@ -19,4 +20,6 @@ public interface IPayService {
      * @return
      */
     Result callbackPayment(ShopPay shopPay);
+
+    ShopPay findOne(Long id);
 }

@@ -58,6 +58,10 @@ public class PayServiceImpl implements IPayService {
     @Value("${mq.pay.tag}")
     private String tag;
 
+    @Override
+    public ShopPay findOne(Long id) {
+        return payMapper.selectByPrimaryKey(id);
+    }
 
     @Override
     public Result createPayment(ShopPay shopPay) {
