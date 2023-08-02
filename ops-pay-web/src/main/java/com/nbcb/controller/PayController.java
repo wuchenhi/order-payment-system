@@ -6,10 +6,8 @@ import com.nbcb.constant.ShopCode;
 import com.nbcb.entity.Result;
 import com.nbcb.pojo.ShopPay;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 
-import static com.alibaba.com.caucho.hessian.io.HessianInputFactory.log;
 
 @RestController
 @RequestMapping("/pay")
