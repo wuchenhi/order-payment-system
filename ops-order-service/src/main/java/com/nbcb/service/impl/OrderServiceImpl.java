@@ -126,8 +126,8 @@ public class OrderServiceImpl implements IOrderService {
                 CastException.cast(ShopCode.SHOP_REDUCE_GOODS_NUM_FAIL);
             }
 
-            // 模拟异常抛出 失败测试
-//            CastException.cast(ShopCode.SHOP_FAIL);
+            // 模拟异常抛出 逆向流程测试
+            // CastException.cast(ShopCode.SHOP_FAIL);
 
             // 6 确认订单
             updateOrderStatus(order);

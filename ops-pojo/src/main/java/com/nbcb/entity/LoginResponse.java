@@ -1,5 +1,8 @@
 package com.nbcb.entity;
 
+import lombok.Data;
+
+@Data
 public class LoginResponse {
     /**
      * 业务状态码，1成功, 其他失败
@@ -13,13 +16,4 @@ public class LoginResponse {
      * 响应结果
      */
     private LoginResult result;
-
-    public String getCode() { return code; }
-    public void setCode(String value) { this.code = value; }
-
-    public String getMsg() { return msg; }
-    public void setMsg(String value) { this.msg = value; }
-
-    public LoginResult getResult() { return result; }
-    public void setResult(LoginResult value) { this.result = value; }
 }

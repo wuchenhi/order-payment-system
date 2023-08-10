@@ -37,7 +37,7 @@ public class GoodsController {
 
         for(ShopGoods goods : goodsList) {
             GoodsResult goodsResult = new GoodsResult();
-            goodsResult.setid(goods.getGoodsId().toString());
+            goodsResult.setId(goods.getGoodsId().toString());
             goodsResult.setAlt(goods.getGoodsName());
             results.add(goodsResult);
         }

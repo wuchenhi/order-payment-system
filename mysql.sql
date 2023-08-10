@@ -25,9 +25,9 @@ CREATE TABLE `shop_goods` (
   PRIMARY KEY (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
 
-insert into `shop_goods` (`goods_id`,`goods_name`, `goods_number`, `goods_price`, `add_time`) VALUES(378715381063495688,'huawei', 10, 1000, '2000-10-10');
+insert into `shop_goods` (`goods_id`,`goods_name`, `goods_number`, `goods_price`, `add_time`) VALUES(378715381063495688,'HUAWEI', 10, 1000, '2000-10-10');
 insert into `shop_goods` (`goods_id`,`goods_name`, `goods_number`, `goods_price`, `add_time`) VALUES(378715381063495687,'西瓜', 1000, 100, '2010-10-10');
-
+insert into `shop_goods` (`goods_id`,`goods_name`, `goods_number`, `goods_price`, `add_time`) VALUES(378715381063495687,'苹果', 5000, 500, '2023-8-8');
 
 CREATE TABLE `shop_msg_consumer` (
   `msg_id` varchar(50) NOT NULL DEFAULT '',

@@ -30,6 +30,7 @@ public class OrderController {
     private IGoodsService goodService;
 
 
+
     @GetMapping("/confirm/pre/{id}")
     public OrderPreResponse confirmOrderPre(@PathVariable("id") Long id) {
         log.info(id.toString());
@@ -47,6 +48,12 @@ public class OrderController {
         return orderPreResponse;
     }
 
+    /**
+     * 创建订单
+     *
+     * @param
+     * @return
+     */
     @PostMapping("/confirm")
     public OrderResponse confirmOrder(@RequestBody ShopOrder order) {
         ShopGoods goods = goodService.findOne(order.getGoodsId());
@@ -91,6 +98,12 @@ public class OrderController {
         return orderResponse;
     }
 
+    /**
+     * 根据id查找订单
+     *
+     * @param
+     * @return
+     */
     @GetMapping("/{id}")
     public OrderQueryResponse getOrder(@PathVariable("id") Long id) {
         log.info(id.toString());

@@ -153,7 +153,7 @@ public class OrderServiceTest {
     public static ShopOrder E() {
         Long couponId = 345988230098857988L;
         Long goodsId = 378715381063495688L;
-        Long userId = 378715381059301373L;
+        Long userId = 378715381059301376L;
         ShopOrder order = new ShopOrder();
         order.setGoodsId(goodsId);
         order.setUserId(userId);

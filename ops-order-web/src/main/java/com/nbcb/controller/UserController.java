@@ -45,7 +45,7 @@ public class UserController {
         LoginResult result = new LoginResult();
         result.setToken(token);
         result.setAccount(user.getUserName());
-        result.setid(String.valueOf(user.getUserId()));
+        result.setId(String.valueOf(user.getUserId()));
 
         LoginResponse response = new LoginResponse();
 
