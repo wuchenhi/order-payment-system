@@ -25,9 +25,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("ALL")
@@ -60,6 +69,8 @@ public class OrderServiceImpl implements IOrderService {
     @Autowired
     private DefaultMQProducer producer;
 
+    private Map<Long, Boolean> EmptyStockMap = new HashMap<>();
+
     @Value("${mq.rocketmq.producer.group}")
     private String groupName;
 
@@ -80,6 +91,8 @@ public class OrderServiceImpl implements IOrderService {
         return orderMapper.selectByPrimaryKey(id);
     }
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public Result confirmOrder(ShopOrder order) {
@@ -315,7 +328,6 @@ public class OrderServiceImpl implements IOrderService {
             e.printStackTrace();
             return new Result(ShopCode.SHOP_FAIL.getSuccess(), ShopCode.SHOP_FAIL.getCode(), ShopCode.SHOP_FAIL.getMessage());
         }
-
     }
 
     /**
@@ -352,7 +364,6 @@ public class OrderServiceImpl implements IOrderService {
                         sendResult = sendReduceGoodsNum(goodsTopic, reduceGoodsNumTag, order.getOrderId().toString(), JSON.toJSONString(orderGoodsLog));
                     } catch (Exception e) {
                         log.info("订单:" + order.getOrderId() + ",扣减库存失败");
-
                     }
                     if (sendResult.getSendStatus().equals(SendStatus.SEND_OK)) {
                         //6 等待发送结果,如果MQ接受到消息,删除发送成功的消息
@@ -366,7 +377,6 @@ public class OrderServiceImpl implements IOrderService {
                         log.info("订单:" + order.getOrderId() + ",扣减库存成功");
                     } else {
                         log.info("订单:" + order.getOrderId() + ",扣减库存失败");
-
                     }
                 }
             });
@@ -506,6 +516,27 @@ public class OrderServiceImpl implements IOrderService {
         } else {
             return new BigDecimal(10);
         }
+    }
+    @Override
+    public ShopOrder secKill(long userId, long goodsId) {
+
+        ShopGoods goods = goodsService.findOne(goodsId);
+
+        ShopOrder shopOrder = new ShopOrder();
+        shopOrder.setGoodsId(goods.getGoodsId());
+        shopOrder.setUserId(userId);
+
+        shopOrder.setAddress("深圳");
+        shopOrder.setGoodsNumber(1);
+        shopOrder.setGoodsPrice(goods.getGoodsPrice());
+        shopOrder.setGoodsAmount(goods.getGoodsPrice().multiply(new BigDecimal(1)));
+        shopOrder.setShippingFee(BigDecimal.ZERO);
+        shopOrder.setOrderAmount(goods.getGoodsPrice().multiply(new BigDecimal(1)).add(BigDecimal.ZERO));
+        shopOrder.setMoneyPaid(new BigDecimal(0));
+
+        Result result = confirmOrder(shopOrder);
+
+        return shopOrder;
     }
 
 }

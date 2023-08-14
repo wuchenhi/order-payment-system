@@ -20,4 +20,17 @@ shop:
     baseURI: ${server.host}:${shop.order.port}
     confirm: /order/confirm
 
-
+# RocketMQ配置
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: seckillProducerGroup
+    send-message-timeout: 50000
+# 自定义消息参数
+mq:
+  seckill:
+    consumer:
+      group:
+        name: seckillTopic_group
+    topic: seckillTopic
+    tag: seckilled
