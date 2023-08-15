@@ -73,7 +73,8 @@ public enum ShopCode {
     SHOP_ORDER_CANCEL_ERROR(false, 70004, "订单取消失败"),
     SHOP_ORDER_ERROR(false, 70005, "下单失败,请联系相关人员"),
     SHOP_SEKILL_REPEAT(false, 70006, "秒杀重复订单"),
-    SHOP_SEKILL_PATHWRONG(false, 70006, "秒杀地址有误");
+    SHOP_SEKILL_PATHWRONG(false, 70007, "秒杀地址有误"),
+    SHOP_SEKILL_TOOMOREREQUEST(false, 70008, "请求次数过多");
 
     Boolean success;
     Integer code;

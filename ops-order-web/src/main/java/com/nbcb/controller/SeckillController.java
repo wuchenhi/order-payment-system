@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.nbcb.api.IGoodsService;
 import com.nbcb.api.IOrderService;
+import com.nbcb.config.AccessLimit;
 import com.nbcb.constant.ShopCode;
 import com.nbcb.entity.OrderResponse;
 import com.nbcb.entity.Result;
@@ -93,9 +94,9 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return 秒杀地址 string返回不合理
      */
+    @AccessLimit(second = 5, maxCount = 5, needLogin = true)
     @GetMapping(value = "/path")
     public String getPath(long userId, long goodsId) {
-
         String str = orderService.createPath(userId, goodsId);
         return str;
     }

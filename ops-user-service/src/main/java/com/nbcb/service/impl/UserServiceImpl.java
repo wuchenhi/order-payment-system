@@ -1,5 +1,6 @@
 package com.nbcb.service.impl;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.nbcb.api.IUserService;
 import com.nbcb.constant.ShopCode;
@@ -10,10 +11,14 @@ import com.nbcb.mapper.ShopUserMoneyLogMapper;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.ShopUserMoneyLog;
 import com.nbcb.pojo.ShopUserMoneyLogExample;
+import com.nbcb.utils.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,6 +33,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private ShopUserMoneyLogMapper userMoneyLogMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public ShopUser findOne(Long userId) {
@@ -103,5 +111,17 @@ public class UserServiceImpl implements IUserService {
             result = new Result(ShopCode.SHOP_FAIL.getSuccess(), ShopCode.SHOP_FAIL.getMessage());
         }
         return result;
+    }
+
+    @Override
+    public ShopUser getUserByCookie(String userTicket, HttpServletRequest request, HttpServletResponse response) {
+        if (StringUtils.isEmpty(userTicket)) {
+            return null;
+        }
+        ShopUser user = (ShopUser) redisTemplate.opsForValue().get("user:" + userTicket);
+        if (user != null) {
+            CookieUtil.setCookie(request, response, "userTicket", userTicket);
+        }
+        return user;
     }
 }

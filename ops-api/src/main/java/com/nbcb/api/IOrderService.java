@@ -37,9 +37,6 @@ public interface IOrderService {
      * @param userId
      * @param goodsId
      * @return orderId 成功 ；-1 秒杀失败 ；0 排队中
-     * @author LiChao
-     * @operation add
-     * @date 7:07 下午 2022/3/8
      **/
     long getResult(long userId, long goodsId);
 

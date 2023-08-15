@@ -4,6 +4,9 @@ import com.nbcb.entity.Result;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.ShopUserMoneyLog;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public interface IUserService {
     /**
      * 根据ID查询用户
@@ -28,4 +31,9 @@ public interface IUserService {
      * @return
      */
     Result updateMoneyPaid(ShopUserMoneyLog userMoneyLog);
+
+    /**
+     * 根据cookie获取用户
+     **/
+    ShopUser getUserByCookie(String userTicket, HttpServletRequest request, HttpServletResponse response);
 }

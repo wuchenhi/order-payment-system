@@ -6,8 +6,7 @@
              RocketMQ
              Zookeeper
              MySQL
-    应用工具: Twitter-Snowflake
-             RestTemplate
+             Redis
 
 注意事项:
 
@@ -17,10 +16,8 @@
         
     2. application 需要添加Dubbo配置 @EnableDubboConfiguration
     
-    3. 微服务模式下 dubbo.protocol端口不能重复,否则启动报错
-    
-    4. 库存回退和扣减均存在并发问题,解决:
+    3. 库存回退和扣减均存在并发问题,解决:
         方案1: 数据库乐观锁
         方案2: MQ+数据库乐观锁
         
-    5. 4中解决方案2存在库存不足时,需要通过MQ异步通知订单服务问题
+    4. 3解决方案2存在库存不足时,需要通过MQ异步通知订单服务问题
