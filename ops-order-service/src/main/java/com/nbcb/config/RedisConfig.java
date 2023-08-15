@@ -10,7 +10,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
-
 /**
  * Redis配置类
  *
@@ -22,7 +21,7 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
-        //key序列化
+        //key序列化 不然会乱码
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         //value序列化
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());

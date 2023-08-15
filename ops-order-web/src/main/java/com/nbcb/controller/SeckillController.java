@@ -28,6 +28,7 @@ import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -87,19 +88,38 @@ public class SeckillController implements InitializingBean {
     }
 
     /**
+     *
+     * @param userId
+     * @param goodsId
+     * @return 秒杀地址 string返回不合理
+     */
+    @GetMapping(value = "/path")
+    public String getPath(long userId, long goodsId) {
+
+        String str = orderService.createPath(userId, goodsId);
+        return str;
+    }
+
+    /**
      * 秒杀
      *
      * @param shopOrder
      * @return
      */
 
-    @PostMapping("/doSeckill")
-    public Result doSeckill(@RequestBody ShopOrder shopOrder) {
+    @PostMapping("/{path}/doSeckill")
+    public Result doSeckill(@PathVariable String path, @RequestBody ShopOrder shopOrder) {
         ShopOrder order = new ShopOrder();
         order.setGoodsId(shopOrder.getGoodsId());
         order.setUserId(shopOrder.getUserId());
 
         ValueOperations valueOperations = redisTemplate.opsForValue();
+
+        boolean check = orderService.checkPath(order.getUserId(), order.getGoodsId(), path);
+        if (!check) {
+           return new Result(ShopCode.SHOP_SEKILL_PATHWRONG.getSuccess(), ShopCode.SHOP_SEKILL_PATHWRONG.getCode(), ShopCode.SHOP_SEKILL_PATHWRONG.getMessage());
+        }
+
         //判断是否重复抢购
         String seckillOrderJson = (String) valueOperations.get("order:" +
                 order.getUserId() + ":" + order.getGoodsId());
@@ -124,7 +144,7 @@ public class SeckillController implements InitializingBean {
         threadPoolTaskExecutor.submit(new Runnable() {
             @Override
             public void run() {
-                //5 发送消息到MQ,有延迟和堆积,使用线程异步优化
+                //发送消息到MQ,有延迟和堆积,使用线程异步优化
                 SendResult sendResult = null;
                 try {
                     sendResult = sendMessage(topic, tag, String.valueOf(order.getGoodsId()), JSON.toJSONString(order));

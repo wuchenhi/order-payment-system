@@ -29,4 +29,33 @@ public interface IOrderService {
      * 秒杀
      **/
     ShopOrder secKill(long userId, long goodsId);
+
+
+    /**
+     * 获取秒杀结果
+     *
+     * @param userId
+     * @param goodsId
+     * @return orderId 成功 ；-1 秒杀失败 ；0 排队中
+     * @author LiChao
+     * @operation add
+     * @date 7:07 下午 2022/3/8
+     **/
+    long getResult(long userId, long goodsId);
+
+    /**
+     * 验证秒杀地址
+     * @param userId
+     * @param goodsId
+     * @param path
+     * @return
+     */
+    boolean checkPath(long userId, long goodsId, String path);
+    /**
+     * 生成秒杀地址
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    String createPath(long userId, long goodsId);
 }

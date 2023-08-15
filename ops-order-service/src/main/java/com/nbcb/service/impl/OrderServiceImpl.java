@@ -3,6 +3,7 @@ package com.nbcb.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nbcb.api.ICouponService;
 import com.nbcb.api.IGoodsService;
 import com.nbcb.api.IOrderService;
@@ -16,6 +17,8 @@ import com.nbcb.mapper.ShopMsgProviderMapper;
 import com.nbcb.mapper.ShopOrderMapper;
 import com.nbcb.pojo.*;
 import com.nbcb.utils.IDWorker;
+import com.nbcb.utils.MD5Util;
+import com.nbcb.utils.UUIDUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -37,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 @SuppressWarnings("ALL")
@@ -534,9 +538,44 @@ public class OrderServiceImpl implements IOrderService {
         shopOrder.setOrderAmount(goods.getGoodsPrice().multiply(new BigDecimal(1)).add(BigDecimal.ZERO));
         shopOrder.setMoneyPaid(new BigDecimal(0));
 
+        // 调用下单函数
         Result result = confirmOrder(shopOrder);
 
+        redisTemplate.opsForValue().set("order:" + userId + ":" + goodsId, JSONObject.toJSONString(shopOrder));
         return shopOrder;
+    }
+
+    @Override
+    public long getResult(long userId, long goodsId) {
+
+//        ShopOrder order = orderMapper.selectByExample()
+//        TSeckillOrder tSeckillOrder = tSeckillOrderMapper.selectOne(new QueryWrapper<TSeckillOrder>().eq("user_id", tUser.getId()).eq("goods_id", goodsId));
+//        if (null != tSeckillOrder) {
+//            return tSeckillOrder.getOrderId();
+//        } else if (redisTemplate.hasKey("isStockEmpty:" + goodsId)) {
+//            return -1L;
+//        } else {
+//            return 0L;
+//        }
+
+        return 1;
+    }
+
+    @Override
+    public boolean checkPath(long userId, long goodsId, String path) {
+        if (StringUtils.isEmpty(path)){
+            return false;
+        }
+        String redisPath = (String) redisTemplate.opsForValue().get("seckillPath:" +
+                userId + ":" + goodsId);
+        return path.equals(redisPath);
+    }
+
+    @Override
+    public String createPath(long userId, long goodsId) {
+        String str = MD5Util.md5(UUIDUtil.uuid() + "123456");
+        redisTemplate.opsForValue().set("seckillPath:" + userId + ":" + goodsId, str, 1, TimeUnit.MINUTES);
+        return str;
     }
 
 }
