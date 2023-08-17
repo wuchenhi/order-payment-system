@@ -38,9 +38,10 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
-            //ShopUser shopUser = getUser(request, response);
-            // 应该从cookie里找到用户
-            ShopUser shopUser = iUserService.findOneByName("yyw");
+            // 应该从cookie里找到用户(太慢了) TODO
+//            ShopUser shopUser = iUserService.findOneByName("yyw");
+
+            ShopUser shopUser = getUser(request, response);
             UserContext.setUser(shopUser);
             HandlerMethod hm = (HandlerMethod) handler;
             AccessLimit accessLimit = hm.getMethodAnnotation(AccessLimit.class);

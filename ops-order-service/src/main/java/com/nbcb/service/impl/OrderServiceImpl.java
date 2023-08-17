@@ -135,7 +135,11 @@ public class OrderServiceImpl implements IOrderService {
             }
 
             // 5 扣减库存
-            Result reduceGoodsNum = reduceGoodsNum(order);
+            // Result reduceGoodsNum = reduceGoodsNum(order);
+
+            // 5 扣减库存 MQ方案
+            Result reduceGoodsNum = reduceGoodsNumByMQ(order);
+
             // Result reduceGoodsNum = reduceGoodsNumByMQ(order);
             if (reduceGoodsNum.getSuccess().equals(ShopCode.SHOP_FAIL.getSuccess())) {
                 log.info(reduceGoodsNum.toString());
@@ -309,7 +313,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     /**
-     * 扣减库存 (存在并发问题,使用数据库乐观锁解决,提升方案MQ)
+     * 扣减库存
      *
      * @param order
      */
@@ -340,13 +344,12 @@ public class OrderServiceImpl implements IOrderService {
      * @param order
      */
     private Result reduceGoodsNumByMQ(ShopOrder order) {
-        // 订单ID  商品ID 商品数量
+        // 订单ID  商品ID  商品数量
         ShopOrderGoodsLog orderGoodsLog = new ShopOrderGoodsLog();
         orderGoodsLog.setOrderId(order.getOrderId());
         orderGoodsLog.setGoodsId(order.getGoodsId());
         orderGoodsLog.setGoodsNumber(order.getGoodsNumber());
         try {
-            /*  MQ start*/
             // 将消息持久化到数据库
             ShopMsgProvider msgProvider = new ShopMsgProvider();
             msgProvider.setId(String.valueOf(idWorker.nextId()));
@@ -358,6 +361,7 @@ public class OrderServiceImpl implements IOrderService {
             msgProvider.setCreateTime(new Date());
             msgProviderMapper.insert(msgProvider);
             log.info("订单服务,持久化减库存消息到库");
+
             // 在线程池中进行处理
             threadPoolTaskExecutor.submit(new Runnable() {
                 @Override
@@ -384,7 +388,6 @@ public class OrderServiceImpl implements IOrderService {
                     }
                 }
             });
-            /*  MQ end */
             return new Result(ShopCode.SHOP_SUCCESS.getSuccess(), ShopCode.SHOP_SUCCESS.getCode(), ShopCode.SHOP_SUCCESS.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -536,7 +539,7 @@ public class OrderServiceImpl implements IOrderService {
         shopOrder.setGoodsAmount(goods.getGoodsPrice().multiply(new BigDecimal(1)));
         shopOrder.setShippingFee(BigDecimal.ZERO);
         shopOrder.setOrderAmount(goods.getGoodsPrice().multiply(new BigDecimal(1)).add(BigDecimal.ZERO));
-        shopOrder.setMoneyPaid(new BigDecimal(0));
+        shopOrder.setMoneyPaid(new BigDecimal(20));
 
         // 调用下单函数
         Result result = confirmOrder(shopOrder);

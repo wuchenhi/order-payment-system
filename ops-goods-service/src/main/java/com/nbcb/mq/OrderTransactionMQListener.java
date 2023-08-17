@@ -52,7 +52,7 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
     public void onMessage(MessageExt messageExt) {
         String body = new String(messageExt.getBody());
         ShopOrder order = JSON.parseObject(body, ShopOrder.class);
-        log.info("商品扣减服务,接收到信息");
+        log.info("商品扣减服务,接收到信息1");
         // 订单ID  商品ID  商品数量
         ShopOrderGoodsLog orderGoodsLog = new ShopOrderGoodsLog();
         orderGoodsLog.setOrderId(order.getOrderId());
@@ -128,7 +128,7 @@ public class OrderTransactionMQListener implements RocketMQListener<MessageExt> 
         orderGoodsLog.setGoodsNumber(-(orderGoodsLog.getGoodsNumber()));
         orderGoodsLog.setLogTime(new Date());
         shopOrderGoodsLogMapper.insert(orderGoodsLog);
-        log.info("扣减库存成功");
+        log.info("扣减库存成功1");
         OrderResult orderResult = new OrderResult();
         orderResult.setOrderId(orderGoodsLog.getOrderId());
         orderResult.setStatus(ShopCode.SHOP_SUCCESS.getSuccess());

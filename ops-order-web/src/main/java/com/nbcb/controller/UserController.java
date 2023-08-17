@@ -11,6 +11,7 @@ import com.nbcb.pojo.ShopOrder;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.UserLogin;
 import com.nbcb.utils.IDWorker;
+import com.nbcb.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +37,14 @@ public class UserController {
         // 根据用户名查找user对象
         ShopUser user = userService.findOneByName(userLogin.getAccount());
 
-        if (user == null || ! user.getUserPassword().equals(userLogin.getPassword())) {
+        String salt = "aabbcc"; // 应该从用户里拿到，但是我的数据库没这个信息
+        if (!MD5Util.formPassToDBPass(userLogin.getPassword(), salt).equals(user.getUserPassword())) {
             ResponseEntity.badRequest().body("Invalid username or password");
         }
+
+//        if (user == null || ! user.getUserPassword().equals(userLogin.getPassword())) {
+//            ResponseEntity.badRequest().body("Invalid username or password");
+//        }
         // 生成token字符串
         String token = String.valueOf(idWorker.nextId());
 

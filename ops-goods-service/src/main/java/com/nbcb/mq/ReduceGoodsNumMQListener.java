@@ -47,7 +47,7 @@ public class ReduceGoodsNumMQListener implements RocketMQListener<MessageExt> {
                 CastException.cast(ShopCode.SHOP_REQUEST_PARAMETER_VALID);
             }
 
-            /** 乐观锁实现*/
+            /** 乐观锁实现 */
             ShopGoods goods = shopGoodsMapper.selectByPrimaryKey(orderGoodsLog.getGoodsId());
             // 判断库存是否充足
             if (goods.getGoodsNumber() < orderGoodsLog.getGoodsNumber()) {
@@ -59,7 +59,7 @@ public class ReduceGoodsNumMQListener implements RocketMQListener<MessageExt> {
             ShopGoodsExample shopGoodsExample = new ShopGoodsExample();
             ShopGoodsExample.Criteria criteria = shopGoodsExample.createCriteria();
             criteria.andGoodsIdEqualTo(goods.getGoodsId());
-            criteria.andGoodsNumberEqualTo(goodsNumber);
+            criteria.andGoodsNumberEqualTo(goodsNumber);     // 原来的数量  条件满足
             int r = shopGoodsMapper.updateByExample(goods, shopGoodsExample);
             while (r <= 0) {
                 // 未修改成功

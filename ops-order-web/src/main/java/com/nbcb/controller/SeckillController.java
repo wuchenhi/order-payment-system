@@ -94,7 +94,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return 秒杀地址 string返回不合理
      */
-    @AccessLimit(second = 5, maxCount = 5, needLogin = true)
+    @AccessLimit(second = 5, maxCount = 5, needLogin = false)  // 先不用登录
     @GetMapping(value = "/path")
     public String getPath(long userId, long goodsId) {
         String str = orderService.createPath(userId, goodsId);
@@ -108,20 +108,25 @@ public class SeckillController implements InitializingBean {
      * @return
      */
 
-    @PostMapping("/{path}/doSeckill")
-    public Result doSeckill(@PathVariable String path, @RequestBody ShopOrder shopOrder) {
+
+
+//    @PostMapping("/doSeckill")
+//    public Result doSeckill(@RequestBody ShopOrder shopOrder) {
+        @PostMapping("/{path}/doSeckill")
+        public Result doSeckill(@PathVariable String path, @RequestBody ShopOrder shopOrder) {
         ShopOrder order = new ShopOrder();
         order.setGoodsId(shopOrder.getGoodsId());
         order.setUserId(shopOrder.getUserId());
 
         ValueOperations valueOperations = redisTemplate.opsForValue();
 
+        // 校验地址 压测先不校验
         boolean check = orderService.checkPath(order.getUserId(), order.getGoodsId(), path);
         if (!check) {
            return new Result(ShopCode.SHOP_SEKILL_PATHWRONG.getSuccess(), ShopCode.SHOP_SEKILL_PATHWRONG.getCode(), ShopCode.SHOP_SEKILL_PATHWRONG.getMessage());
         }
 
-        //判断是否重复抢购
+        // 判断是否重复抢购 压测先不校验
         String seckillOrderJson = (String) valueOperations.get("order:" +
                 order.getUserId() + ":" + order.getGoodsId());
 

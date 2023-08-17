@@ -77,7 +77,9 @@ public class UserServiceImpl implements IUserService {
             }
             //扣减余额
             user.setUserMoney(user.getUserMoney().subtract(userMoneyLog.getUseMoney()));
+
             userMapper.updateByPrimaryKey(user);
+            log.info("扣减余额");
         }
 
         //4回退余额
@@ -98,6 +100,7 @@ public class UserServiceImpl implements IUserService {
             // 退款加余额
             user.setUserMoney(user.getUserMoney().add(userMoneyLog.getUseMoney()));
             userMapper.updateByPrimaryKey(user);
+            log.info("回退余额");
         }
 
         //5记录订单余额使用日志
@@ -106,6 +109,7 @@ public class UserServiceImpl implements IUserService {
         try {
             userMoneyLogMapper.insert(userMoneyLog);
             result = new Result(ShopCode.SHOP_SUCCESS.getSuccess(), ShopCode.SHOP_SUCCESS.getMessage());
+            log.info("插入支付日志");
         } catch (Exception e) {
             log.info(e.toString());
             result = new Result(ShopCode.SHOP_FAIL.getSuccess(), ShopCode.SHOP_FAIL.getMessage());

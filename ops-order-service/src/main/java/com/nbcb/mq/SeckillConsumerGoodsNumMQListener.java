@@ -26,11 +26,8 @@ import java.util.List;
 @SpringBootConfiguration
 public class SeckillConsumerGoodsNumMQListener {
 
-
-//    @Reference(check = false)
     @Autowired
     private IOrderService orderService;
-
 
     @Value("${mq.rocketmq.name-server}")
     private String namesrvAddr;
@@ -47,7 +44,6 @@ public class SeckillConsumerGoodsNumMQListener {
 
     @Bean
     public DefaultMQPushConsumer getSeckillRocketMQConsumer() throws MQClientException {
-
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(groupName);
         consumer.setNamesrvAddr(namesrvAddr);
         consumer.setConsumeThreadMin(consumeThreadMin);
@@ -59,7 +55,6 @@ public class SeckillConsumerGoodsNumMQListener {
         System.out.println("SeckillReduceGoodsNumMQListener消费者启动");
         return consumer;
     }
-
 
     class SeckillMessageReduceGoodsNumMQListener implements MessageListenerConcurrently {
     @Override
