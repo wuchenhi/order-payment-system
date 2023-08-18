@@ -17,8 +17,9 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
+
 @SuppressWarnings("ALL")
+@Slf4j
 @Component
 @Service(interfaceClass = IGoodsService.class)
 public class GoodsServiceImpl implements IGoodsService {
