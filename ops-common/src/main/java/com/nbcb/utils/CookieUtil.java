@@ -24,7 +24,7 @@ public final class CookieUtil {
     }
 
     /**
-     * 得到Cookie的值,=
+     * 得到Cookie的值
      *
      * @param request
      * @param cookieName
@@ -54,7 +54,7 @@ public final class CookieUtil {
     }
 
     /**
-     * 得到Cookie的值,
+     * 得到Cookie的值
      *
      * @param request
      * @param cookieName
@@ -143,7 +143,7 @@ public final class CookieUtil {
             Cookie cookie = new Cookie(cookieName, cookieValue);
             if (cookieMaxage > 0)
                 cookie.setMaxAge(cookieMaxage);
-            if (null != request) {// 设置域名的cookie
+            if (null != request) {     // 设置域名的cookie
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
                 if (!"localhost".equals(domainName)) {
@@ -174,7 +174,7 @@ public final class CookieUtil {
             if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
             }
-            if (null != request) {// 设置域名的cookie
+            if (null != request) {       // 设置域名的cookie
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
                 if (!"localhost".equals(domainName)) {

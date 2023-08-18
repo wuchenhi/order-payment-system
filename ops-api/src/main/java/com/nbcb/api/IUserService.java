@@ -1,8 +1,10 @@
 package com.nbcb.api;
 
+import com.nbcb.entity.LoginResponse;
 import com.nbcb.entity.Result;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.ShopUserMoneyLog;
+import com.nbcb.pojo.UserLogin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,4 +38,13 @@ public interface IUserService {
      * 根据cookie获取用户
      **/
     ShopUser getUserByCookie(String userTicket, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 登录方法
+     *
+     * @param userLogin
+     * @param request
+     * @param response
+     **/
+    LoginResponse doLongin(UserLogin userLogin, HttpServletRequest request, HttpServletResponse response);
 }

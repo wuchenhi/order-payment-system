@@ -51,6 +51,21 @@ public class GoodsController {
         return response;
     }
 
+//    @RequestMapping("/toList")
+//    public String toLogin(HttpSession session, Model model,
+//                          @CookieValue("userTicket") String ticket) {
+//        if (StringUtils.isEmpty(ticket)) {
+//            return "login";
+//        }
+//
+//        User user = (User) session.getAttribute(ticket);   //根据session辨识用户
+//        if (null == user) {
+//            return "login";
+//        }
+//        model.addAttribute("user", user);
+//        return "goodsList";
+
+
     @GetMapping("/detail")
     public GoodsDetailResponse getOneGoods(Long id) {
         log.info(id.toString());

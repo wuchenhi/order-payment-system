@@ -38,9 +38,6 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {
-            // 应该从cookie里找到用户(太慢了) TODO
-//            ShopUser shopUser = iUserService.findOneByName("yyw");
-
             ShopUser shopUser = getUser(request, response);
             UserContext.setUser(shopUser);
             HandlerMethod hm = (HandlerMethod) handler;
@@ -87,9 +84,18 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
 
     private ShopUser getUser(HttpServletRequest request, HttpServletResponse response) {
         String userTicket = CookieUtil.getCookieValue(request, "userTicket");
+
         if (StringUtils.isEmpty(userTicket)) {
             return null;
         }
-        return iUserService.getUserByCookie(userTicket, request, response);
+
+        ShopUser user = (ShopUser) redisTemplate.opsForValue().get("user:" + userTicket);
+        if (user != null) {
+            CookieUtil.setCookie(request, response, "userTicket", userTicket);
+        }
+        return user;
+
+       // return iUserService.getUserByCookie(userTicket, request, response);  // request 没有序列化 Dubbo调用问题
+
     }
 }

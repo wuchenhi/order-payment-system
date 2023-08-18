@@ -4,6 +4,8 @@ import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.nbcb.api.IUserService;
 import com.nbcb.constant.ShopCode;
+import com.nbcb.entity.LoginResponse;
+import com.nbcb.entity.LoginResult;
 import com.nbcb.entity.Result;
 import com.nbcb.exception.CastException;
 import com.nbcb.mapper.ShopUserMapper;
@@ -11,16 +13,22 @@ import com.nbcb.mapper.ShopUserMoneyLogMapper;
 import com.nbcb.pojo.ShopUser;
 import com.nbcb.pojo.ShopUserMoneyLog;
 import com.nbcb.pojo.ShopUserMoneyLogExample;
+import com.nbcb.pojo.UserLogin;
 import com.nbcb.utils.CookieUtil;
+import com.nbcb.utils.MD5Util;
+import com.nbcb.utils.UUIDUtil;
+import com.nbcb.utils.IDWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
+
 
 @SuppressWarnings("ALL")
 @Slf4j
@@ -33,6 +41,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private ShopUserMoneyLogMapper userMoneyLogMapper;
+
+    @Autowired
+    private IDWorker idWorker;
 
     @Autowired
     RedisTemplate redisTemplate;
@@ -127,5 +138,48 @@ public class UserServiceImpl implements IUserService {
             CookieUtil.setCookie(request, response, "userTicket", userTicket);
         }
         return user;
+    }
+
+    @Override
+    public LoginResponse doLongin(UserLogin userLogin, HttpServletRequest request, HttpServletResponse response) {
+        // 根据用户名查找user对象
+        ShopUser user = userMapper.selectByName(userLogin.getAccount());
+
+        // 密码判断(加密)
+        String salt = "aabbcc"; // 应该从用户里拿到，但是我的数据库没这个信息
+        if (!MD5Util.formPassToDBPass(userLogin.getPassword(), salt).equals(user.getUserPassword())) {
+            ResponseEntity.badRequest().body("Invalid username or password");
+        }
+
+        // 密码判断(明文)
+//        if (user == null || ! user.getUserPassword().equals(userLogin.getPassword())) {
+//            ResponseEntity.badRequest().body("Invalid username or password");
+//        }
+
+        //生成Cookie
+        String userTicket = UUIDUtil.uuid();
+        //将用户信息存入redis
+        redisTemplate.opsForValue().set("user:" + userTicket, user);
+
+        request.getSession().setAttribute(userTicket, user);  //
+        CookieUtil.setCookie(request, response, "userTicket", userTicket);
+
+        // 生成token字符串
+        String token = String.valueOf(idWorker.nextId());
+
+        LoginResult result = new LoginResult();
+        result.setToken(token);
+        result.setAccount(user.getUserName());
+        result.setId(String.valueOf(user.getUserId()));
+
+        LoginResponse loginResponse = new LoginResponse();
+
+        loginResponse.setCode("1");
+        loginResponse.setMsg("操作成功");
+        loginResponse.setResult(result);
+
+        log.info(user.getUserName());
+        log.info(user.getUserPassword());
+        return loginResponse;
     }
 }

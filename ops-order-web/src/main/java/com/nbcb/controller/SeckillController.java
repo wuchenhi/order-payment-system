@@ -94,7 +94,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return 秒杀地址 string返回不合理
      */
-    @AccessLimit(second = 5, maxCount = 5, needLogin = false)  // 先不用登录
+    @AccessLimit(second = 5, maxCount = 5, needLogin = true)  // 先不用登录
     @GetMapping(value = "/path")
     public String getPath(long userId, long goodsId) {
         String str = orderService.createPath(userId, goodsId);
@@ -107,9 +107,6 @@ public class SeckillController implements InitializingBean {
      * @param shopOrder
      * @return
      */
-
-
-
 //    @PostMapping("/doSeckill")
 //    public Result doSeckill(@RequestBody ShopOrder shopOrder) {
         @PostMapping("/{path}/doSeckill")
