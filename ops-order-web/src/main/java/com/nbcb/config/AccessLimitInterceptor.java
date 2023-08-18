@@ -14,13 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.thymeleaf.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
-
 import static com.alibaba.com.caucho.hessian.io.HessianInputFactory.log;
 
 /**
@@ -58,10 +56,10 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
             }
             ValueOperations valueOperations = redisTemplate.opsForValue();
             Integer count = (Integer) valueOperations.get(key);
-            log.info(String.valueOf(count));
+//            log.info(String.valueOf(count));
             if (count == null) {
                 valueOperations.set(key, 1, second, TimeUnit.SECONDS);
-                log.info(key);
+//                log.info(key);
             } else if (count < maxCount) {
                 valueOperations.increment(key,1);
             } else {
@@ -76,7 +74,6 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter printWriter = response.getWriter();
-//        ShopCode shopCode = RespBean.error(shopCode);
         printWriter.write(new ObjectMapper().writeValueAsString(shopCode));
         printWriter.flush();
         printWriter.close();
@@ -96,6 +93,5 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
         return user;
 
        // return iUserService.getUserByCookie(userTicket, request, response);  // request 没有序列化 Dubbo调用问题
-
     }
 }

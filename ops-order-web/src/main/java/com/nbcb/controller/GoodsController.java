@@ -2,19 +2,13 @@ package com.nbcb.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.nbcb.api.IGoodsService;
-import com.nbcb.api.IUserService;
 import com.nbcb.entity.*;
 import com.nbcb.pojo.ShopGoods;
-import com.nbcb.pojo.ShopUser;
-import com.nbcb.pojo.UserLogin;
 import com.nbcb.utils.IDWorker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.alibaba.com.caucho.hessian.io.HessianInputFactory.log;
 
 // 处理登录请求的接口
@@ -50,21 +44,6 @@ public class GoodsController {
 
         return response;
     }
-
-//    @RequestMapping("/toList")
-//    public String toLogin(HttpSession session, Model model,
-//                          @CookieValue("userTicket") String ticket) {
-//        if (StringUtils.isEmpty(ticket)) {
-//            return "login";
-//        }
-//
-//        User user = (User) session.getAttribute(ticket);   //根据session辨识用户
-//        if (null == user) {
-//            return "login";
-//        }
-//        model.addAttribute("user", user);
-//        return "goodsList";
-
 
     @GetMapping("/detail")
     public GoodsDetailResponse getOneGoods(Long id) {

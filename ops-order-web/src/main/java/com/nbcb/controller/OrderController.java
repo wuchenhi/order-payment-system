@@ -5,11 +5,9 @@ import com.alibaba.fastjson.JSON;
 import com.nbcb.api.IGoodsService;
 import com.nbcb.api.IOrderService;
 import com.nbcb.api.IPayService;
-import com.nbcb.constant.ShopCode;
 import com.nbcb.entity.*;
 import com.nbcb.pojo.ShopGoods;
 import com.nbcb.pojo.ShopOrder;
-import com.nbcb.pojo.ShopPay;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -30,7 +28,6 @@ public class OrderController {
     private IGoodsService goodService;
 
 
-
     @GetMapping("/confirm/pre/{id}")
     public OrderPreResponse confirmOrderPre(@PathVariable("id") Long id) {
         log.info(id.toString());
@@ -39,9 +36,6 @@ public class OrderController {
 
         ShopGoods goods = goodService.findOne(id);
         orderPreResult.setGoods(goods);
-
-//        orderPreResult.setUserAddress();
-
         orderPreResponse.setCode("1");
         orderPreResponse.setMsg("操作成功");
         orderPreResponse.setResult(orderPreResult);
@@ -50,9 +44,6 @@ public class OrderController {
 
     /**
      * 创建订单
-     *
-     * @param
-     * @return
      */
     @PostMapping("/confirm")
     public OrderResponse confirmOrder(@RequestBody ShopOrder order) {
@@ -100,9 +91,6 @@ public class OrderController {
 
     /**
      * 根据id查找订单
-     *
-     * @param
-     * @return
      */
     @GetMapping("/{id}")
     public OrderQueryResponse getOrder(@PathVariable("id") Long id) {

@@ -7,7 +7,6 @@ import com.nbcb.constant.ShopCode;
 import com.nbcb.entity.*;
 import com.nbcb.pojo.ShopPay;
 import org.springframework.web.bind.annotation.*;
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/pay")
@@ -17,9 +16,6 @@ public class PayController {
 
     /**
      * 创建支付单据(用户支付调用)
-     *
-     * @param
-     * @return
      */
     @PostMapping("/createPay")
     PayResponse createPay(@RequestBody ShopPay shopPay) {
@@ -44,9 +40,6 @@ public class PayController {
 
     /**
      * 完成支付单据
-     *
-     * @param
-     * @return
      */
     @PostMapping("/finishPay")
     PayResponse finishPay(@RequestBody ShopPay payIn) {
@@ -70,9 +63,6 @@ public class PayController {
 
     /**
      * 支付回调(第三方调用)
-     *
-     * @param shopPay
-     * @return
      */
     @PostMapping("/callbackPayment")
     Result callbackPayment(@RequestBody ShopPay shopPay) {

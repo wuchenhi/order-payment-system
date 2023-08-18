@@ -6,13 +6,10 @@ import com.nbcb.api.IGoodsService;
 import com.nbcb.api.IOrderService;
 import com.nbcb.config.AccessLimit;
 import com.nbcb.constant.ShopCode;
-import com.nbcb.entity.OrderResponse;
 import com.nbcb.entity.Result;
 import com.nbcb.exception.CastException;
 import com.nbcb.pojo.ShopGoods;
-import com.nbcb.pojo.ShopMsgProviderKey;
 import com.nbcb.pojo.ShopOrder;
-import com.nbcb.pojo.ShopUser;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +24,10 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static com.alibaba.com.caucho.hessian.io.HessianInputFactory.log;
 
 @RestController
@@ -66,13 +59,10 @@ public class SeckillController implements InitializingBean {
     @Value("${mq.seckill.tag}")
     private String tag;
 
-
     private Map<Long, Boolean> EmptyStockMap = new HashMap<>();
-
 
     /**
      * 系统初始化，把商品库存数量加载到Redis
-     * package org.springframework.beans.factory;
      **/
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -94,7 +84,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return 秒杀地址 string返回不合理
      */
-    @AccessLimit(second = 5, maxCount = 5, needLogin = true)  // 先不用登录
+    @AccessLimit(second = 5, maxCount = 5, needLogin = true)
     @GetMapping(value = "/path")
     public String getPath(long userId, long goodsId) {
         String str = orderService.createPath(userId, goodsId);
@@ -107,23 +97,21 @@ public class SeckillController implements InitializingBean {
      * @param shopOrder
      * @return
      */
-//    @PostMapping("/doSeckill")
-//    public Result doSeckill(@RequestBody ShopOrder shopOrder) {
-        @PostMapping("/{path}/doSeckill")
-        public Result doSeckill(@PathVariable String path, @RequestBody ShopOrder shopOrder) {
+    @PostMapping("/{path}/doSeckill")
+    public Result doSeckill(@PathVariable String path, @RequestBody ShopOrder shopOrder) {
         ShopOrder order = new ShopOrder();
         order.setGoodsId(shopOrder.getGoodsId());
         order.setUserId(shopOrder.getUserId());
 
         ValueOperations valueOperations = redisTemplate.opsForValue();
 
-        // 校验地址 压测先不校验
+        // 校验地址
         boolean check = orderService.checkPath(order.getUserId(), order.getGoodsId(), path);
         if (!check) {
            return new Result(ShopCode.SHOP_SEKILL_PATHWRONG.getSuccess(), ShopCode.SHOP_SEKILL_PATHWRONG.getCode(), ShopCode.SHOP_SEKILL_PATHWRONG.getMessage());
         }
 
-        // 判断是否重复抢购 压测先不校验
+        // 判断是否重复抢购
         String seckillOrderJson = (String) valueOperations.get("order:" +
                 order.getUserId() + ":" + order.getGoodsId());
 
